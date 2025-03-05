@@ -5,6 +5,7 @@ fake = Faker()
 def get_upcoming_birthdays(users): 
   today = datetime.now().date()
   one_week_after_today = today + timedelta(days=7)
+  print(today, one_week_after_today)
 
   users_w_birthdays_soon = []
 
@@ -16,7 +17,10 @@ def get_upcoming_birthdays(users):
       'name': user["name"]
     }
 
-    user_temp["congratulation_date"] = get_celebration_date_datetime(user['birthday']).replace(year=today.year).date()
+    if one_week_after_today.year == today.year:
+      user_temp["congratulation_date"] = get_celebration_date_datetime(user['birthday']).replace(year=today.year).date()
+    else:
+      user_temp["congratulation_date"] = get_celebration_date_datetime(user['birthday']).replace(year=today.year + 1).date()
     
     birthday_weekday = user_temp["congratulation_date"].weekday()
 
@@ -37,7 +41,9 @@ users = [
     {"name": "Jane Smith", "birthday": "1990.01.27"},
     {"name": fake.name(), "birthday": "1990.02.27"},
     {"name": fake.name(), "birthday": "1990.03.02"},
-    {"name": fake.name(), "birthday": "1990.03.27"}
+    {"name": fake.name(), "birthday": "1990.03.09"},
+    {"name": fake.name(), "birthday": "1990.03.27"},
+    {"name": fake.name(), "birthday": "1990.01.03"}
 ]
 
 upcoming_birthdays = get_upcoming_birthdays(users)
